@@ -1,0 +1,47 @@
+#include "apue.h"
+#include <fcntl.h>
+#include <sys/stat.h>
+
+void pr_stdio(const char *, FILE *);
+
+int main(int argc, char *argv[])
+{
+	FILE *fp;
+
+	fputs("enter any character\n",stdout);
+	if(getchar() == EOF)
+		perror("getchar error!\n");
+		
+	fputs("one line to standard error\n",stderr);
+
+	pr_stdio("stdin",stdin);
+	pr_stdio("stdout",stdout);
+	pr_stdio("stderr",stderr);
+
+	if((fp = fopen("/home/wang/p5/a.txt", "r")) == NULL)
+		perror("fopen error!\n");
+
+	if(getc(fp) == EOF)
+		perror("getc error!\n");
+	
+	pr_stdio("/home/wang/p5/a.txt", fp);
+
+	fprintf(stdout, "stdout line buffer test");
+	fprintf(stderr, "stderr nobuffer test");
+	sleep(5);
+	return 0;
+}
+
+void pr_stdio(const char *name, FILE *fp)
+{
+	printf("stream = %s, ", name);
+	
+	if(fp->_IO_file_flags & _IO_UNBUFFERED)
+		printf("unbuffered");
+	else if(fp->_IO_file_flags & _IO_LINE_BUF)
+		printf("line buffered");
+	else
+		printf("full buffered");
+	
+	printf(", buffer size = %ld\n", fp->_IO_buf_end - fp->_IO_buf_base);
+}

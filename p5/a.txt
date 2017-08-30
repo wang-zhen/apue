@@ -1,0 +1,48 @@
+*********************
+*********************
+标准io和文件io的异同
+
+********************
+标准io是 ISO C标准的实现，而文件io是 POSIX的实现
+
+********************
+标准io的操作对象是流(stream)，文件io的操作对象是
+文件描述符。在liunx上，文件描述符是内核定义的，
+而流是由标准io的实现内部定义的，其中包含了为了
+管理改流所需要的所有信息：文件描述符，缓冲区长
+度等等。这就是为什么也把标准io称作带缓冲区的io
+的原因。
+
+********************
+stdin,stdout,stderr 是FILE*类型的，使用者为
+fopen,fread,fwrite等;STDIN_FILENO,STDOUT_FILENO,
+STDERR_FILENO 是int类型，使用者为open,read,write
+等。
+
+********************
+打开：fopen freopen fdopen
+按照字符：
+	输入：getc fgetc getchar(异常处理：ferror feof clearerr)
+		ungetc 将字符压送回流中
+	输出：putc fputc putchar
+按照行：
+	输入：gets fgets 
+	输出：puts fputs
+按照指定大小：
+	读：fread
+	写：fwrite
+定位流：
+	fseek ftell fseeko ftello
+格式化I/O:
+	输出： printf  fprintf  sprintf  snprintf
+		   vprintf vfprintf vsprintf vsnprintf
+	输入： scanf  fscanf  sscanf
+		   vscanf vfscanf vsscanf
+		
+********************
+通过示例5.3可以看到 当stdin
+stdout是指向终端时，它们是行缓冲的，缓冲区大小是1024。普通文件
+是全缓冲的，缓冲区大小是4096。
+
+5.3中29行添加了两行输出(没有换行)然后休眠，可以验证stdout是行缓冲
+stderr没有缓冲这一点。
