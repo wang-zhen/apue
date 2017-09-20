@@ -2,7 +2,7 @@ SRCS =$(wildcard *.c)
 OBJS =$(patsubst %.c,%,$(SRCS))
 
 C = gcc
-CFLAGS = -Wall -O -g -o
+CFLAGS = -lpthread -Wall -O -g -o
 
 .PHONY:all clean
 
